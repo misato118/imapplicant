@@ -56,12 +56,13 @@ export const sendResetPasswordEmail = async (req, res) => {
                 pass: process.env.EMAIL_PASSWORD
             }
         });
-          
+        
         var mailOptions = {
             from: process.env.HOST_EMAIL,
             to: email,
             subject: 'imapplicant - Reset Password',
-            text: `Click the following link to reset your password: http://localhost:3000/reset_password/${token}` // TODO: Change this when I get server
+            //text: `Click the following link to reset your password: http://localhost:3000/reset_password/${token}`
+            text: `Click the following link to reset your password: https://imapplicant-client.onrender.com/reset_password/${token}`
         };
           
         transporter.sendMail(mailOptions, function(error, info){

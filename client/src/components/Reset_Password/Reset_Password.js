@@ -15,8 +15,8 @@ const Reset_Password = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [snackBarOpen, setSnackBarOpen] = useState(false); // snackbar for password validation
 
-    // TODO: Change URL to trim when getting a server
-    const [token, setToken] = useState(window.location.href.replace('http://localhost:3000/reset_password/', ''));
+    //const [token, setToken] = useState(window.location.href.replace('http://localhost:3000/reset_password/', ''));
+    const [token, setToken] = useState(window.location.href.replace('https://imapplicant-client.onrender.com/reset_password/', ''));
 
     const handleResetPassword = (e) => {
         e.preventDefault();

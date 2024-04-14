@@ -11,7 +11,6 @@ var appIdGlobal = -1;
 
 // Add data to IndexedDB (applictaions table) when submitting a create app form 
 export const addData = (formData) => async(dispatch, navigate) => {
-    console.log('addData ' + JSON.stringify(formData));
     try {
         // Add formData to the applications table
         await appDB.open();
@@ -29,7 +28,6 @@ export const addData = (formData) => async(dispatch, navigate) => {
 
         // Send to server and mongodb
         const { data } = await api.createApplication(id, formData);
-        console.log('addData ' + JSON.stringify(data) + ' ' + id);
 
         // If server responds success and added a new app, then add the rest to IndexedDB
         appDB.applications.update(id, { ref_id: data._id }).then(function (updated) {
@@ -37,10 +35,8 @@ export const addData = (formData) => async(dispatch, navigate) => {
                 addToApps(id, formData);
                 formData.id = id;
                 formData.ref_id = data._id;
-                console.log('addData2 ' + JSON.stringify(formData));
                 dispatch({ type: ADD, payload: formData });
             } else { // Or else do nothing and remove the id
-                console.log('Failed to add an application');
                 appDB.applications.delete(id);
             }
         });
@@ -49,7 +45,8 @@ export const addData = (formData) => async(dispatch, navigate) => {
         console.log('Error! ' + error);
 
         appDB.applications.delete(appIdGlobal);
-        window.location = 'http://localhost:3000/error'; // TODO: Must change this when getting a server
+        //window.location = 'http://localhost:3000/error';
+        window.location = 'https://imapplicant-client.onrender.com/error';
     }
 }
 
@@ -77,7 +74,8 @@ export const updateData = (formData, updatedAppId, mongoAppId) => async(dispatch
 
     } catch (error) {
         console.log('Error! ' + error);
-        window.location = 'http://localhost:3000/error'; // TODO: Must change this when getting a server
+        //window.location = 'http://localhost:3000/error';
+        window.location = 'https://imapplicant-client.onrender.com/error';
     }  
 }
 
@@ -99,7 +97,6 @@ export const getAll = (tableName, user) => async(dispatch) => {
         let dispatchData;
         const mongoData = tableName == 'applications' && user ? await api.getApplications() : undefined;
         const localData = await appDB[tableName].toArray();
-        console.log('getAll1 ' + JSON.stringify(mongoData));
         
         dispatchData = mongoData ? mongoData.data : localData;
 
@@ -136,7 +133,8 @@ export const getAll = (tableName, user) => async(dispatch) => {
         if (errorName) {
             if (errorName.data) {
                 if (errorName.data == 'No user found') {
-                    window.location = 'http://localhost:3000/auth'; // TODO: Must change this when getting a server
+                    //window.location = 'http://localhost:3000/auth';
+                    window.location = 'https://imapplicant-client.onrender.com/auth';
                 } else if (errorName.data.message == 'TokenExpiredError') { // If TokenExpiredError occurs on server side, just make the user logout
                     dispatch({ type: 'LOGOUT' });
                 }
@@ -182,7 +180,6 @@ export const getAllRankings = () => async(dispatch) => {
 // This is not called
 export const addResearchReq = (data) => async(dispatch) => {
     try {
-        console.log('test ' + JSON.stringify(data));
         dispatch({ type: ADD_REQ_RESEARCH, payload: data });
     } catch (error) {
         console.log(error);
@@ -254,11 +251,12 @@ export const updateStatus = (app, newStatus) => async(dispatch) => {
         if (errorName) {
             if (errorName.data) {
                 if (errorName.data == 'No user found') {
-                    window.location = 'http://localhost:3000/auth'; // TODO: Must change this when getting a server
+                    //window.location = 'http://localhost:3000/auth';
+                    window.location = 'https://imapplicant-client.onrender.com/auth';
                 } else if (errorName.data.message == 'TokenExpiredError') { // If TokenExpiredError occurs on server side, just make the user logout
-                    console.log('logout');
                     dispatch({ type: 'LOGOUT' });
-                    window.location = 'http://localhost:3000/auth'; // TODO: Must change this when getting a server
+                    //window.location = 'http://localhost:3000/auth';
+                    window.location = 'https://imapplicant-client.onrender.com/auth';
                 }
             }
         }
