@@ -17,10 +17,6 @@ const StatusForm = (props) => {
     const [status, setStatus] = useState(props.data.status);
     const [navVal, setNavVal] = useState(1); // For navigation tabs
 
-    console.log('status ' + status);
-    console.log(props.user);
-    console.log(props.data.status);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         
